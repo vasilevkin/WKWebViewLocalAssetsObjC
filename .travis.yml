@@ -1,0 +1,5 @@
+language:
+  - objective-c
+osx_image: xcode10.1
+script:
+  - xcodebuild -project WKWebViewLocalAssetsObjC/WKWebViewLocalAssetsObjC.xcodeproj -scheme WKWebViewLocalAssetsObjC -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone X,OS=12.1' build | xcpretty
