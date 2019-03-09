@@ -11,6 +11,7 @@
 		86EDE9972233A9E7000F1B7C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86EDE9962233A9E7000F1B7C /* Assets.xcassets */; };
 		86EDE99A2233A9E7000F1B7C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86EDE9982233A9E7000F1B7C /* LaunchScreen.storyboard */; };
 		86EDE99D2233A9E7000F1B7C /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EDE99C2233A9E7000F1B7C /* main.m */; };
+		86EDE9A52233D16B000F1B7C /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EDE9A42233D16B000F1B7C /* MainViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -21,6 +22,8 @@
 		86EDE9992233A9E7000F1B7C /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		86EDE99B2233A9E7000F1B7C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		86EDE99C2233A9E7000F1B7C /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		86EDE9A32233D16B000F1B7C /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		86EDE9A42233D16B000F1B7C /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +61,8 @@
 				86EDE9962233A9E7000F1B7C /* Assets.xcassets */,
 				86EDE9982233A9E7000F1B7C /* LaunchScreen.storyboard */,
 				86EDE99B2233A9E7000F1B7C /* Info.plist */,
+				86EDE9A32233D16B000F1B7C /* MainViewController.h */,
+				86EDE9A42233D16B000F1B7C /* MainViewController.m */,
 				86EDE99C2233A9E7000F1B7C /* main.m */,
 			);
 			path = WKWebViewLocalAssetsObjC;
@@ -133,6 +138,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				86EDE99D2233A9E7000F1B7C /* main.m in Sources */,
+				86EDE9A52233D16B000F1B7C /* MainViewController.m in Sources */,
 				86EDE98F2233A9E3000F1B7C /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
