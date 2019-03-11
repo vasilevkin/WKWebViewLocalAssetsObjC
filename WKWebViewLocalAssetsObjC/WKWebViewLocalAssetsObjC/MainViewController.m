@@ -10,8 +10,20 @@
 
 @interface MainViewController ()
 
+@property (nonatomic, assign) WKWebView *webView;
+@property (nonatomic, assign) UIButton *loadHtmlAsFileButton;
+@property (nonatomic, assign) UIButton *loadHtmlAsStringButton;
+@property (nonatomic, assign) UIButton *zoomButton;
+@property (nonatomic, assign) UIButton *runJavaScriptButton;
+
 - (void)configureUI;
 - (void)addActions;
+
+// Button actions
+- (void)loadWebViewContentAsFile;
+- (void)loadWebViewContentAsString;
+- (void)tapZoomButton;
+- (void)tapRunJavascript;
 
 @end
 
@@ -59,7 +71,7 @@
     mainStackView.alignment = UIStackViewAlignmentFill;
     mainStackView.distribution = UIStackViewDistributionFill;
     mainStackView.spacing = kStackViewSpacing;
-    mainStackView.translatesAutoresizingMaskIntoConstraints = false;
+    mainStackView.translatesAutoresizingMaskIntoConstraints = NO;
     [self.view addSubview:mainStackView];
     // Layout for Main Stack View
     UILayoutGuide *guide = self.view.safeAreaLayoutGuide;
@@ -69,9 +81,10 @@
     [guide.bottomAnchor constraintEqualToAnchor:mainStackView.bottomAnchor constant:kSizeMainStackViewOffset].active = YES;
     
     // Web View
-    UIView *webView = [[WKWebView alloc] init];
+    WKWebView *webView = [[WKWebView alloc] init];
     webView.backgroundColor = [UIColor lightGrayColor];
-    webView.translatesAutoresizingMaskIntoConstraints = false;
+    webView.translatesAutoresizingMaskIntoConstraints = NO;
+    self.webView = webView;
     [mainStackView addArrangedSubview:webView];
     
     // Load html as File and Load html as String Stack View
@@ -80,7 +93,7 @@
     loadHtmlFileAndLoadHtmlStringStackView.alignment = UIStackViewAlignmentFill;
     loadHtmlFileAndLoadHtmlStringStackView.distribution = UIStackViewDistributionFillEqually;
     loadHtmlFileAndLoadHtmlStringStackView.spacing = kStackViewSpacing;
-    loadHtmlFileAndLoadHtmlStringStackView.translatesAutoresizingMaskIntoConstraints = false;
+    loadHtmlFileAndLoadHtmlStringStackView.translatesAutoresizingMaskIntoConstraints = NO;
     [mainStackView addArrangedSubview:loadHtmlFileAndLoadHtmlStringStackView];
     
     // Load html as File Button
@@ -89,7 +102,8 @@
     [loadHtmlAsFileButton setTitleColor:kColorLoadHtmlAsFileButtonText forState:UIControlStateNormal];
     [loadHtmlAsFileButton setTitle:kTitleLoadHtmlAsFileButton forState:UIControlStateNormal];
     [loadHtmlAsFileButton.titleLabel setFont:[UIFont systemFontOfSize:kFontSizeButtonText]];
-    loadHtmlAsFileButton.translatesAutoresizingMaskIntoConstraints = false;
+    loadHtmlAsFileButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.loadHtmlAsFileButton = loadHtmlAsFileButton;
     [loadHtmlFileAndLoadHtmlStringStackView addArrangedSubview:loadHtmlAsFileButton];
     // Layout for Load html as File Button
     [loadHtmlAsFileButton.heightAnchor constraintEqualToConstant:kButtonHeight].active = YES;
@@ -100,7 +114,8 @@
     [loadHtmlAsStringButton setTitleColor: kColorLoadHtmlAsStringButtonText forState:UIControlStateNormal];
     [loadHtmlAsStringButton setTitle:kTitleLoadHtmlAsStringButton forState:UIControlStateNormal];
     [loadHtmlAsStringButton.titleLabel setFont:[UIFont systemFontOfSize:kFontSizeButtonText]];
-    loadHtmlAsStringButton.translatesAutoresizingMaskIntoConstraints = false;
+    loadHtmlAsStringButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.loadHtmlAsStringButton = loadHtmlAsStringButton;
     [loadHtmlFileAndLoadHtmlStringStackView addArrangedSubview:loadHtmlAsStringButton];
     // Layout for Load html as String Button
     [loadHtmlAsStringButton.heightAnchor constraintEqualToConstant:kButtonHeight].active = YES;
@@ -111,7 +126,7 @@
     zoomAndRunJavascriptStackView.alignment = UIStackViewAlignmentFill;
     zoomAndRunJavascriptStackView.distribution = UIStackViewDistributionFillProportionally;
     zoomAndRunJavascriptStackView.spacing = kStackViewSpacing;
-    zoomAndRunJavascriptStackView.translatesAutoresizingMaskIntoConstraints = false;
+    zoomAndRunJavascriptStackView.translatesAutoresizingMaskIntoConstraints = NO;
     [mainStackView addArrangedSubview:zoomAndRunJavascriptStackView];
     
     // Zoom Button
@@ -119,7 +134,8 @@
     zoomButton.backgroundColor = kColorZoomButton;
     [zoomButton setTitleColor:kColorZoomButtonText forState:UIControlStateNormal];
     [zoomButton setTitle:kTitleZoomButton forState:UIControlStateNormal];
-    zoomButton.translatesAutoresizingMaskIntoConstraints = false;
+    zoomButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.zoomButton = zoomButton;
     [zoomAndRunJavascriptStackView addArrangedSubview:zoomButton];
     // Layout for Zoom Button
     [zoomButton.heightAnchor constraintEqualToConstant:kButtonHeight].active = YES;
@@ -129,13 +145,43 @@
     runJavaScriptButton.backgroundColor = kColorRunJavaScriptButton;
     [runJavaScriptButton setTitleColor: kColorRunJavaScriptButtonText forState:UIControlStateNormal];
     [runJavaScriptButton setTitle:kTitleRunJavaScriptButton forState:UIControlStateNormal];
-    runJavaScriptButton.translatesAutoresizingMaskIntoConstraints = false;
+    runJavaScriptButton.translatesAutoresizingMaskIntoConstraints = NO;
+    self.runJavaScriptButton = runJavaScriptButton;
     [zoomAndRunJavascriptStackView addArrangedSubview:runJavaScriptButton];
     // Layout for Run JavaScript Button
     [runJavaScriptButton.heightAnchor constraintEqualToConstant:kButtonHeight].active = YES;
 }
 
 - (void)addActions {
+    [self.loadHtmlAsFileButton addTarget:self
+                        action:@selector(loadWebViewContentAsFile:)
+              forControlEvents:UIControlEventTouchUpInside];
+    [self.loadHtmlAsStringButton addTarget:self
+                        action:@selector(loadWebViewContentAsString:)
+              forControlEvents:UIControlEventTouchUpInside];
+    [self.zoomButton addTarget:self
+                        action:@selector(tapZoomButton:)
+              forControlEvents:UIControlEventTouchUpInside];
+    [self.runJavaScriptButton addTarget:self
+                        action:@selector(tapRunJavascript:)
+              forControlEvents:UIControlEventTouchUpInside];
+}
+
+#pragma mark - Button actions
+
+- (void)loadWebViewContentAsFile {
+    
+}
+
+- (void)loadWebViewContentAsString {
+    
+}
+
+- (void)tapZoomButton {
+    
+}
+
+- (void)tapRunJavascript {
     
 }
 
