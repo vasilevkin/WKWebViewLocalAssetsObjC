@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		86A0A69922382747008A6411 /* LocalWebAssets in Resources */ = {isa = PBXBuildFile; fileRef = 86A0A69822382747008A6411 /* LocalWebAssets */; };
 		86EDE98F2233A9E3000F1B7C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 86EDE98E2233A9E3000F1B7C /* AppDelegate.m */; };
 		86EDE9972233A9E7000F1B7C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 86EDE9962233A9E7000F1B7C /* Assets.xcassets */; };
 		86EDE99A2233A9E7000F1B7C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 86EDE9982233A9E7000F1B7C /* LaunchScreen.storyboard */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		86A0A69822382747008A6411 /* LocalWebAssets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = LocalWebAssets; sourceTree = "<group>"; };
 		86EDE98A2233A9E3000F1B7C /* WKWebViewLocalAssetsObjC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WKWebViewLocalAssetsObjC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		86EDE98D2233A9E3000F1B7C /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		86EDE98E2233A9E3000F1B7C /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -64,6 +66,7 @@
 				86EDE9A32233D16B000F1B7C /* MainViewController.h */,
 				86EDE9A42233D16B000F1B7C /* MainViewController.m */,
 				86EDE99C2233A9E7000F1B7C /* main.m */,
+				86A0A69822382747008A6411 /* LocalWebAssets */,
 			);
 			path = WKWebViewLocalAssetsObjC;
 			sourceTree = "<group>";
@@ -125,6 +128,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				86A0A69922382747008A6411 /* LocalWebAssets in Resources */,
 				86EDE99A2233A9E7000F1B7C /* LaunchScreen.storyboard in Resources */,
 				86EDE9972233A9E7000F1B7C /* Assets.xcassets in Resources */,
 			);

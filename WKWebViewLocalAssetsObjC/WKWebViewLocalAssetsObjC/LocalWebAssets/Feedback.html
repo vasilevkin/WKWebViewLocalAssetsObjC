@@ -1,0 +1,37 @@
+<html>
+    <head>
+        <meta name="viewport" content="initial-scale=1.0" />
+        <link href="css/local.css" rel="stylesheet" type="text/css">
+            </head>
+    <body>
+        <h1>Feedback</h1>
+        
+        <p>Hi, I'm <a href="https://svasilevkin.wordpress.com/" rel="home">Sergey</a>. </p>
+        <p>Feedback is welcome:</p>
+        <p><a href="https://mobile.twitter.com/vasilevkin" target="_blank" rel="noopener">@vasilevkin</a> on Twitter for quick comments.</p>
+        <p><a href="mailto:svasilevkin@gmail.com">svasilevkin@gmail.com</a> for private feedback.</p>
+        <p>I try to read every message, but I can't respond to them all. Thank you for understanding.</p>
+        <p>&nbsp;</p>
+        <p>&nbsp;</p>
+
+        <h4>Local Pages</h4>
+        <p><a href="htmlAsFile.html" rel="home">Load html as file</a></p>
+        <p><a href="htmlAsString.html" rel="home">Load html as string</a></p>
+        <p><a href="index.html" rel="home">Start page</a></p>
+
+        <h4>Feedback</h4>
+        <p><a href="Feedback.html" rel="home">Send me a feedback</a></p>
+
+        <h2>External Links</h2>
+        <p>My blog</p>
+        <p><a href="https://svasilevkin.wordpress.com/" rel="home">Passionate Mobile Development</a></p>
+
+        <script>
+            function textMessageJS(){
+                var message = "Please send me some feedback!"
+                window.webkit.messageHandlers.JavaScriptObserver.postMessage(message)
+                return "Ok, successfull JavaScript execution!"
+            }
+        </script>
+    </body>
+</html>
