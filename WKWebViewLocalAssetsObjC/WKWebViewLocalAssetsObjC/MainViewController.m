@@ -29,6 +29,12 @@
     // Refresh main view
     [self.view layoutIfNeeded];
     
+    self.webView.navigationDelegate = self;
+    
+    // Add ScriptMessageHandler in JavaScript:
+    // window.webkit.messageHandlers.JavaScriptObserver.postMessage(message)
+    [self.webView.configuration.userContentController addScriptMessageHandler:self name:@"JavaScriptObserver"];
+
     [self loadWebViewContent];
 }
 
@@ -205,7 +211,33 @@
 }
 
 - (void)tapRunJavascript {
+    NSString *script = @"textMessageJS()";
     
+    [self.webView evaluateJavaScript:script completionHandler:^(id _Nullable result, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"evaluateJavaScript error: %@", error.localizedDescription);
+        } else {
+            NSLog(@"evaluateJavaScript result: %@", result);
+        }
+    }];
+}
+
+#pragma mark - WKScriptMessageHandler
+
+- (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
+    
+    // Callback from JavaScript:
+    // window.webkit.messageHandlers.JavaScriptObserver.postMessage(message)
+    NSString *text = message.body;
+    UIAlertController *alertController = [UIAlertController
+                                          alertControllerWithTitle:@"Message from JavaScript"
+                                          message:text
+                                          preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+        NSLog(@"OK");
+    }];
+    [alertController addAction:okAction];
+    [self presentViewController:alertController animated:YES completion:nil];
 }
 
 /*
