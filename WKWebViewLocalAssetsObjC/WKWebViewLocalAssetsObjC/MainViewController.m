@@ -16,15 +16,6 @@
 @property (nonatomic, assign) UIButton *zoomButton;
 @property (nonatomic, assign) UIButton *runJavaScriptButton;
 
-- (void)configureUI;
-- (void)addActions;
-
-// Button actions
-- (void)loadWebViewContentAsFile;
-- (void)loadWebViewContentAsString;
-- (void)tapZoomButton;
-- (void)tapRunJavascript;
-
 @end
 
 @implementation MainViewController
@@ -37,6 +28,8 @@
     
     // Refresh main view
     [self.view layoutIfNeeded];
+    
+    [self loadWebViewContent];
 }
 
 #pragma mark - Private
@@ -152,29 +145,59 @@
     [runJavaScriptButton.heightAnchor constraintEqualToConstant:kButtonHeight].active = YES;
 }
 
+/// Load local html resource as File or as String
+- (void)loadWebViewContent: (NSString *)file asFile:(BOOL)asFile {
+    
+    NSString *filePath = [[NSBundle mainBundle] pathForResource:file ofType:@"html" inDirectory:@"LocalWebAssets"];
+    if ([filePath isEqual: @""]) {
+        NSLog(@"Unable to load local html file: %@", file);
+        return;
+    }
+    
+    if (asFile) {
+        // load local file
+        NSURL *filePathURL = [NSURL fileURLWithPath:filePath];
+        NSURL *fileDirectoryURL = [filePathURL URLByDeletingLastPathComponent];
+        [self.webView loadFileURL:filePathURL allowingReadAccessToURL:fileDirectoryURL];
+    } else {
+        @try {
+            // load html string. baseURL is required for local files to load correctly
+            NSString *html = [NSString stringWithContentsOfFile:filePath encoding:kCFStringEncodingUTF8 error:nil];
+            [self.webView loadHTMLString:html baseURL:[[[NSBundle mainBundle] resourceURL] URLByAppendingPathComponent:@"LocalWebAssets"]];
+        }
+        @catch (NSException *exception) {
+            NSLog(@"Unable to load local html resource as string");
+        }
+    }
+}
+
+- (void)loadWebViewContent {
+    [self loadWebViewContent:@"index" asFile:YES];
+}
+
 - (void)addActions {
     [self.loadHtmlAsFileButton addTarget:self
-                        action:@selector(loadWebViewContentAsFile:)
-              forControlEvents:UIControlEventTouchUpInside];
+                                  action:@selector(loadWebViewContentAsFile)
+                        forControlEvents:UIControlEventTouchUpInside];
     [self.loadHtmlAsStringButton addTarget:self
-                        action:@selector(loadWebViewContentAsString:)
-              forControlEvents:UIControlEventTouchUpInside];
+                                    action:@selector(loadWebViewContentAsString)
+                          forControlEvents:UIControlEventTouchUpInside];
     [self.zoomButton addTarget:self
-                        action:@selector(tapZoomButton:)
+                        action:@selector(tapZoomButton)
               forControlEvents:UIControlEventTouchUpInside];
     [self.runJavaScriptButton addTarget:self
-                        action:@selector(tapRunJavascript:)
-              forControlEvents:UIControlEventTouchUpInside];
+                                 action:@selector(tapRunJavascript)
+                       forControlEvents:UIControlEventTouchUpInside];
 }
 
 #pragma mark - Button actions
 
 - (void)loadWebViewContentAsFile {
-    
+    [self loadWebViewContent:@"htmlAsFile" asFile:YES];
 }
 
 - (void)loadWebViewContentAsString {
-    
+    [self loadWebViewContent:@"htmlAsString" asFile:YES];
 }
 
 - (void)tapZoomButton {
