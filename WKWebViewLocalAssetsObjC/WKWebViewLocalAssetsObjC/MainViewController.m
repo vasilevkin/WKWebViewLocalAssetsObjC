@@ -15,6 +15,7 @@
 @property (nonatomic, assign) UIButton *loadHtmlAsStringButton;
 @property (nonatomic, assign) UIButton *zoomButton;
 @property (nonatomic, assign) UIButton *runJavaScriptButton;
+@property (nonatomic, assign) BOOL zoomEnabled;
 
 @end
 
@@ -34,6 +35,7 @@
     // Add ScriptMessageHandler in JavaScript:
     // window.webkit.messageHandlers.JavaScriptObserver.postMessage(message)
     [self.webView.configuration.userContentController addScriptMessageHandler:self name:@"JavaScriptObserver"];
+    self.zoomEnabled = YES;
 
     [self loadWebViewContent];
 }
@@ -207,7 +209,34 @@
 }
 
 - (void)tapZoomButton {
-    
+    if (self.zoomEnabled) {
+        self.zoomEnabled = NO;
+        [self.zoomButton setTitle:@"Zoom OFF" forState:UIControlStateNormal];
+        [self.zoomButton setBackgroundColor:UIColor.redColor];
+        
+        // Disable zoom in web view
+        // I wish NSString has more simple concatenation
+        NSString *source = [NSString stringWithFormat:@"%@ %@ %@ %@ %@",
+                            @"var meta = document.createElement('meta');",
+                            @"meta.name = 'viewport';",
+                            @"meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';",
+                            @"var head = document.getElementsByTagName('head')[0];",
+                            @"head.appendChild(meta);"];
+
+        WKUserScript *script  = [[WKUserScript alloc] initWithSource:source injectionTime: WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
+        
+        [self.webView.configuration.userContentController addUserScript:script];
+        [self.webView reload];
+    } else {
+        self.zoomEnabled = YES;
+        
+        [self.zoomButton setTitle:@"Zoom ON" forState:UIControlStateNormal];
+        [self.zoomButton setBackgroundColor:UIColor.greenColor];
+        
+        // Enable zoom in web view
+        [self.webView.configuration.userContentController removeAllUserScripts];
+        [self.webView reload];
+    }
 }
 
 - (void)tapRunJavascript {
