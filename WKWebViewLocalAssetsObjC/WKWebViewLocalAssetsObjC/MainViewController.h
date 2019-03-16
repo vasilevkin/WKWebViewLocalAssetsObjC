@@ -8,10 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import <WebKit/WebKit.h>
+#import <MessageUI/MessageUI.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MainViewController : UIViewController <WKScriptMessageHandler>
+@interface MainViewController : UIViewController <WKScriptMessageHandler, WKNavigationDelegate, MFMailComposeViewControllerDelegate>
 
 @end
 

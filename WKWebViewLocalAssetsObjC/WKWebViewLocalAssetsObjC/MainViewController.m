@@ -36,7 +36,7 @@
     // window.webkit.messageHandlers.JavaScriptObserver.postMessage(message)
     [self.webView.configuration.userContentController addScriptMessageHandler:self name:@"JavaScriptObserver"];
     self.zoomEnabled = YES;
-
+    
     [self loadWebViewContent];
 }
 
@@ -157,7 +157,7 @@
 - (void)loadWebViewContent: (NSString *)file asFile:(BOOL)asFile {
     
     NSString *filePath = [[NSBundle mainBundle] pathForResource:file ofType:@"html" inDirectory:@"LocalWebAssets"];
-    if ([filePath isEqual: @""]) {
+    if ([filePath isEqual: @""] || filePath == nil || filePath == (id)[NSNull null]) {
         NSLog(@"Unable to load local html file: %@", file);
         return;
     }
@@ -222,7 +222,7 @@
                             @"meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';",
                             @"var head = document.getElementsByTagName('head')[0];",
                             @"head.appendChild(meta);"];
-
+        
         WKUserScript *script  = [[WKUserScript alloc] initWithSource:source injectionTime: WKUserScriptInjectionTimeAtDocumentEnd forMainFrameOnly:YES];
         
         [self.webView.configuration.userContentController addUserScript:script];
@@ -251,6 +251,79 @@
     }];
 }
 
+- (void)sendEmail {
+    if ([MFMailComposeViewController canSendMail]) {
+        MFMailComposeViewController *email = [[MFMailComposeViewController alloc] init];
+        email.mailComposeDelegate = self;
+        [email setSubject:@"Feedback"];
+        NSString *appName = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"];
+        NSString *version = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+        NSString *buildNumber = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+        
+        if (appName && version && buildNumber) {
+            NSString *subject = [NSString stringWithFormat:@"Feedback for %@, Version: %@, Build: %@", appName, version, buildNumber];
+            [email setSubject:subject];
+        }
+        
+        NSArray *recipients = [NSArray arrayWithObject:@"svasilevkin@gmail.com"];
+        [email setToRecipients:recipients];
+        [email setMessageBody:@"<p>This is message text.</p>" isHTML:YES];
+        [self presentViewController:email animated:YES completion:nil];
+    } else {
+        // show failure alert
+        UIAlertController *alertController = [UIAlertController
+                                              alertControllerWithTitle:@"No email account"
+                                              message:@"Please configure email account first."
+                                              preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *okAction = [UIAlertAction
+                                   actionWithTitle:@"OK"
+                                   style:UIAlertActionStyleDefault
+                                   handler:nil];
+        [alertController addAction:okAction];
+        [self presentViewController:alertController animated:YES completion:nil];
+    }
+}
+
+#pragma mark - WKNavigationDelegate
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(WKNavigation *)navigation {
+    NSLog(@"Delegate method webView didFinishNavigation:");
+}
+
+- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler {
+    if (navigationAction.navigationType == WKNavigationTypeLinkActivated) {
+        NSURL *url = navigationAction.request.URL;
+        NSString *host = url.host;
+        NSLog(@"%@", url);
+        if ([url isEqual: @""] || url == nil || url == (id)[NSNull null]) {
+            NSLog(@"Link is not a url.");
+            decisionHandler(WKNavigationActionPolicyAllow);
+            return;
+        }
+        if ([url.absoluteString hasPrefix:@"file:"]) {
+            NSLog(@"Open link locally.");
+            decisionHandler(WKNavigationActionPolicyAllow);
+        } else if ((![host isEqual: @""] || !(host == nil) || !(host == (id)[NSNull null])) &&
+                   !([host hasPrefix:@"svasilevkin.wordpress.com"]) &&
+                   [UIApplication.sharedApplication canOpenURL:url]) {
+            [UIApplication.sharedApplication openURL:url options:@{} completionHandler:nil];
+            NSLog(@"%@", url);
+            NSLog(@"Redirected to browser.");
+            decisionHandler(WKNavigationActionPolicyCancel);
+        } else if ([url.absoluteString hasPrefix:@"mailto:"]) {
+            NSLog(@"Send email locally");
+            [self sendEmail];
+            decisionHandler(WKNavigationActionPolicyAllow);
+        } else {
+            NSLog(@"Open link locally");
+            decisionHandler(WKNavigationActionPolicyAllow);
+        }
+    } else {
+        NSLog(@"not a user click");
+        decisionHandler(WKNavigationActionPolicyAllow);
+    }
+}
+
 #pragma mark - WKScriptMessageHandler
 
 - (void)userContentController:(WKUserContentController *)userContentController didReceiveScriptMessage:(WKScriptMessage *)message {
@@ -269,14 +342,10 @@
     [self presentViewController:alertController animated:YES completion:nil];
 }
 
-/*
- #pragma mark - Navigation
- 
- // In a storyboard-based application, you will often want to do a little preparation before navigation
- - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
- // Get the new view controller using [segue destinationViewController].
- // Pass the selected object to the new view controller.
- }
- */
+#pragma mark - MFMailComposeViewControllerDelegate
+
+- (void)mailComposeController:(MFMailComposeViewController *)controller didFinishWithResult:(MFMailComposeResult)result error:(NSError *)error {
+    [controller dismissViewControllerAnimated:YES completion:nil];
+}
 
 @end
