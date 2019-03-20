@@ -1,9 +1,40 @@
-# WKWebViewLocalAssetsObjC
+<h1 align="center">WKWebViewLocalAssetsObjC</h1>
 
-[![Travis CI](https://travis-ci.org/vasilevkin/WKWebViewLocalAssetsObjC.svg?branch=master)](https://travis-ci.org/vasilevkin/WKWebViewLocalAssetsObjC)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-![Platforms](https://img.shields.io/badge/platform-iOS-lightgrey.svg)
-[![Objective-C Version](https://img.shields.io/badge/language-Objective--C-orange.svg?style=flat)](https://developer.apple.com/library/archive/documentation/Cocoa/Conceptual/ProgrammingWithObjectiveC/Introduction/Introduction.html)
+<br />
+
+<div align="center">
+<!-- Travis CI -->
+<a href="https://travis-ci.org/vasilevkin/WKWebViewLocalAssetsObjC">
+<img src="https://travis-ci.org/vasilevkin/WKWebViewLocalAssetsObjC.svg?branch=master" alt="Travis CI">
+
+<!-- Last commit -->
+<a href="https://github.com/vasilevkin/WKWebViewLocalAssetsObjC/commits/master">
+<img src="https://img.shields.io/github/last-commit/vasilevkin/WKWebViewLocalAssetsObjC.svg" alt="last commit">
+
+<!-- Open issues -->
+<a href="https://github.com/vasilevkin/WKWebViewLocalAssetsObjC/issues">
+<img src="https://img.shields.io/github/issues-raw/vasilevkin/WKWebViewLocalAssetsObjC.svg" alt="open issues">
+
+<!-- License: MIT -->
+<a href="https://opensource.org/licenses/MIT">
+<img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT">
+
+<!-- Platforms -->
+<a href="https://developer.apple.com/develop/">
+<img src="https://img.shields.io/badge/platform-iOS-lightgrey.svg" alt="Platforms">
+
+<!-- Objective-C version -->
+<a href="https://developer.apple.com/swift/">
+<img src="https://img.shields.io/badge/language-Objective--C-orange.svg?style=flat" alt="Objective-C version">
+</div>
+
+<div align="center">
+<sub><a href="https://svasilevkin.wordpress.com/">Crafted with ❤︎ by Sergey Vasilevkin</a></sub>
+</div>
+
+<br />
+
+<br />
 
 
 [The same Sample iOS app in Swift.](https://github.com/vasilevkin/WKWebViewLocalAssets)
